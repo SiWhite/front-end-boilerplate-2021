@@ -17,7 +17,7 @@ Install Node using [Homebrew](https://brew.sh) or [NVM](https://github.com/nvm-s
 Install [Gulp](http://gulpjs.com) globally:
 
 	[sudo] npm install -g gulp 
-  	[sudo] npm install --g gulp-cli
+  	[sudo] npm install -g gulp-cli
 
 Install dependencies:
 
