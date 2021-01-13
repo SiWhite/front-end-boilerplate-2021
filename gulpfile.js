@@ -8,7 +8,7 @@ const uglify = require('gulp-uglify');
 const gutil = require('gulp-util');
 const size = require('gulp-size');
 const autoprefixer = require('gulp-autoprefixer');
-const watch = require('gulp-watch');
+// const watch = require('gulp-watch');
 const concat = require('gulp-concat');
 
 const config = {
@@ -43,7 +43,7 @@ const paths = {
     }
 }
 
-exports.js = () => {
+function js() {
     return src(paths.js.src)
     .pipe(concat('bundle.js'))
     .pipe(buffer())
@@ -55,7 +55,7 @@ exports.js = () => {
     .pipe(dest(paths.js.dest))
 }
 
-exports.css = () => {
+function css() {
     return src(paths.css.src)
     .pipe(sass())
     .on("error", sass.logError)
@@ -64,20 +64,27 @@ exports.css = () => {
     .pipe(dest(paths.css.dest))
 }
 
-exports.clean = () => {
+function clean() {
     return del([
         paths.css.dest,
     ]);
 }
 
-gulp.task('watch', () => {
-    gulp.watch(paths.css.src, (done) => {
-        gulp.series(['clean', 'css'])(done);
-    });
+function watchFiles() {
+    gulp.watch(paths.css.src, css);
+    gulp.watch(paths.js.src, js);
+}
 
-    // gulp.watch(paths.js.src, (done) => {
-    //     gulp.series(['clean', 'js'])(done);
-    // });
-});
+const watch = gulp.parallel(watchFiles);
+exports.watch = watch;
+// gulp.task('watch', () => {
+//     gulp.watch(paths.css.src, (done) => {
+//         gulp.series(['clean', 'css'])(done);
+//     });
+
+//     // gulp.watch(paths.js.src, (done) => {
+//     //     gulp.series(['clean', 'js'])(done);
+//     // });
+// });
 
 
