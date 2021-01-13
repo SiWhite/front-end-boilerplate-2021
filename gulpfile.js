@@ -1,6 +1,8 @@
+const gulp = require('gulp');
 const { src, dest } = require('gulp');
 const minifyCss = require('gulp-minify-css');
 const sass = require("gulp-sass");
+const del = require('del');
 const buffer = require('vinyl-buffer');
 const uglify = require('gulp-uglify');
 const gutil = require('gulp-util');
@@ -61,5 +63,21 @@ exports.css = () => {
     .pipe(minifyCss())
     .pipe(dest(paths.css.dest))
 }
+
+exports.clean = () => {
+    return del([
+        paths.css.dest,
+    ]);
+}
+
+gulp.task('watch', () => {
+    gulp.watch(paths.css.src, (done) => {
+        gulp.series(['clean', 'css'])(done);
+    });
+
+    // gulp.watch(paths.js.src, (done) => {
+    //     gulp.series(['clean', 'js'])(done);
+    // });
+});
 
 
