@@ -1,0 +1,1 @@
+function goodbye(){return"Goodbye!"}function hello(){return"Hello there!"}goodbye(),hello();
