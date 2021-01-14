@@ -11,6 +11,7 @@ const size = require('gulp-size');
 const argv = require('yargs').argv;
 const autoprefixer = require('gulp-autoprefixer');
 const collapse = require('bundle-collapser/plugin');
+const imagemin = require('gulp-imagemin');
 const browserSync = require('browser-sync').create();
 
 const paths = {
@@ -25,6 +26,10 @@ const paths = {
     html: {
         src: "src/*.html",
         dest: "dist/"
+    },
+    img: {
+        src: "src/img/*",
+        dest: "dist/img"
     }
 }
 
@@ -92,10 +97,18 @@ function copyhtml() {
     .pipe(browserSync.stream());
 }
 
+function imgSquash() {
+    return src(paths.img.src)
+    .pipe(imagemin())
+    .pipe(dest(paths.img.dest))
+}
+
+
 function watch() {
     gulp.watch(paths.html.src, copyhtml);
     gulp.watch(paths.css.src, css);
     gulp.watch(paths.js.src, js);
+    gulp.watch(paths.img.src, imgSquash);
     browserSync.init({
         server: {
            baseDir: "./dist",
@@ -103,6 +116,8 @@ function watch() {
         }
     });
 }
+
+
 
 gulp.task('build', gulp.parallel(css, js));
 
