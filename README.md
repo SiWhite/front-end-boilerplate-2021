@@ -28,3 +28,4 @@ Install dependencies:
 	gulp css - Bundle SCSS files
 	gulp js - Bundle the JavaScript files
 	gulp watch - Watch SCSS and JavaScript files and bundle on changes
+	gulp imgSquash - Optimise images via gulp-imagemin plugin
