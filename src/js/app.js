@@ -1,6 +1,6 @@
-function goodbye() {
+const $ = require('jquery');
+const modernizr = require('./lib/modernizr.js');
 
-    return 'Goodbye!!!';
-}
-
-goodbye();
+$(function() {
+   console.log('ready!!');
+});
