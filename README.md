@@ -25,7 +25,6 @@ Install dependencies:
 
 ## Tasks
 
-	gulp build - Bundle SCSS and JavaScript files
 	gulp css - Bundle SCSS files
 	gulp js - Bundle the JavaScript files
 	gulp watch - Watch SCSS and JavaScript files and bundle on changes
