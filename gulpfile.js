@@ -12,6 +12,7 @@ const argv = require('yargs').argv;
 const autoprefixer = require('gulp-autoprefixer');
 const collapse = require('bundle-collapser/plugin');
 const imagemin = require('gulp-imagemin');
+const clean = require('gulp-clean');
 const browserSync = require('browser-sync').create();
 
 const paths = {
@@ -67,7 +68,7 @@ const config = {
 
 function js() {
     var bundler  = browserify(config.browserify.options);
-
+    clearJs();
     return bundler.plugin(collapse).bundle()
     .on('error', config.browserify.error)
     .pipe(source(config.browserify.name))
@@ -77,31 +78,55 @@ function js() {
       this.emit('end');
     }) : gutil.noop())
     .pipe(size(config.size))
-    .pipe(dest(config.browserify.dest))
+    .pipe(dest(config.browserify.dest, {allowEmpty: true}))
     .pipe(browserSync.stream());
 }
 
 function css() {
+    clearCss();
     return src(paths.css.src)
     .pipe(sass()).on("error", config.sass.error)
     .pipe(autoprefixer(config.autoprefixer))
-    .pipe(config.compress ? minifyCss(config.minifyCss) : gutil.noop())
+    .pipe(minifyCss(config.minifyCss))
     .pipe(size(config.size))
-    .pipe(dest(paths.css.dest))
+    .pipe(dest(paths.css.dest, {allowEmpty: true}))
     .pipe(browserSync.stream());
 }
 
 function copyhtml() {
+    clearHtml();
     return src(paths.html.src)
-    .pipe(dest(paths.html.dest))
+    .pipe(dest(paths.html.dest, {allowEmpty: true}))
     .pipe(browserSync.stream());
 }
 
 function imgSquash() {
     return src(paths.img.src)
     .pipe(imagemin())
-    .pipe(dest(paths.img.dest))
+    .pipe(dest(paths.img.dest, {allowEmpty: true}))
 }
+
+function clearCss() {
+    return src(paths.css.dest, {
+            read: false
+        })
+        .pipe(clean());
+}
+
+function clearJs() {
+    return src(paths.js.dest, {
+            read: false
+        })
+        .pipe(clean());
+}
+
+function clearHtml() {
+    return src(paths.html.dest+'/*.html', {
+            read: false
+        })
+        .pipe(clean());
+}
+
 
 
 function watch() {
